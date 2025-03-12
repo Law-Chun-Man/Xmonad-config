@@ -49,7 +49,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((0,                          0x1008ff59),    spawn (myTerminal++" -e "++home ++ "/.config/xmonad/monitor.sh"))
 
     -- play pause
-    , ((mod1Mask,                   xK_space),      spawn ("playerctl play-pause"))
+    , ((mod1Mask,                   xK_space),      spawn ("playerctl play-pause || parole --play"))
 
     -- volume
     , ((0,                          0x1008ff11),    spawn (home ++ "/.config/xmonad/dunst/volume_decrease.sh"))
@@ -77,7 +77,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch app finder
     , ((modm,                       xK_p),          spawn "xfce4-appfinder")
-    , ((modm,                       xK_slash),      spawn "xfce4-appfinder -c")
+    , ((modm,                       xK_slash),      spawn (myTerminal++" -T run_command --geometry 40x1 -e "++home++"/.config/xmonad/run_command.sh"))
     , ((modm .|. shiftMask,         0x1008ffb1),    spawn "xfce4-appfinder")
 
     -- launch firefox
@@ -234,7 +234,8 @@ myLayout = avoidStruts (smartBorders tiled ||| noBorders Full)
 -- Window rules
 --
 myManageHook = composeAll
-    [ className =? "Xfce4-appfinder"    --> doFloat
+    [ title     =? "run_command"        --> doFloat
+    -- , className =? "Xfce4-appfinder"    --> doFloat
     , resource  =? "desktop_window"     --> doIgnore
     , resource  =? "kdesktop"           --> doIgnore ] <+> namedScratchpadManageHook scratchpads
 
